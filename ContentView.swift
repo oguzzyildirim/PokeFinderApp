@@ -13,8 +13,7 @@ struct ContentView: View {
     guard !searchText.isEmpty else{return pokemonViewModel.pokemons}
     return pokemonViewModel.pokemons.filter{$0?.name?.localizedCaseInsensitiveContains(searchText) ?? false}
   }
-  //var count: [Int] = Array(1...151)
-  //adaptiveColumns minimum değerimle frame değerimin width'i aynı olmalı
+  // adaptiveColumns min value and frame's width value should be same value.
   private let adaptiveColumns = [
     GridItem(.adaptive(minimum: 170))
   ]
@@ -38,23 +37,23 @@ struct ContentView: View {
                     AsyncImage(url: URL(string: "https://assets.pokemon.com/assets/cms2/img/pokedex/full/\(String(pokemon?.id ?? 1).padStart(toLength: 3, withPad: "0")).png")){ phase in
                       switch phase {
                       case .empty:
-                        // Placeholder görüntü
+                        // Placeholder view
                         Image("pokeBall")
                           .resizable()
                           .frame(width: 100, height: 120)
                           .cornerRadius(10)
                           .padding(.bottom, 100)
                       case .success(let image):
-                        // Başarılı şekilde indirilen görüntü
+                        // Successfully downloaded image.
                         image
                           .resizable()
                           .frame(width: 100, height: 120)
                           .padding(.bottom, 100)
                       case .failure(_):
-                        // Hata durumu için görüntü
+                        // A view for failure case
                         Color.red
                       @unknown default:
-                        // Bilinmeyen durum için görüntü
+                        // A view for unknown case
                         Color.gray
                       }
                     }
@@ -99,68 +98,3 @@ struct ContentView_Previews: PreviewProvider {
   }
 }
 
-
-
-
-//          HStack{
-//            ZStack{
-//              Rectangle()
-//                .foregroundColor(Color(red: 222/255, green: 253/255, blue: 224/255))
-//                .cornerRadius(30)
-//              Image("sample-image")
-//                .resizable()
-//                .frame(width: 105, height: 130)
-//                .padding(.bottom, 85)
-//              Text("Bulbausar")
-//                .foregroundColor(.black)
-//                .bold()
-//                .padding(.top, 90)
-//            }
-//            .frame(width: 170, height: 250, alignment: .center)
-//            ZStack{
-//              Rectangle()
-//                .foregroundColor(Color(red: 222/255, green: 253/255, blue: 224/255))
-//                .cornerRadius(30)
-//              Image("sample-image")
-//                .resizable()
-//                .frame(width: 105, height: 130)
-//                .padding(.bottom, 85)
-//              Text("Bulbausar")
-//                .foregroundColor(.black)
-//                .bold()
-//                .padding(.top, 90)
-//            }
-//            .frame(width: 170, height: 250, alignment: .center)
-//
-//          }
-//          Spacer(minLength: 335)
-
-
-
-
-
-//          Text("PokeFinder")
-//            .font(.system(size: 35))
-//            .foregroundColor(Color("TextColor"))
-//            .bold()
-//            .padding()
-//            .frame(minWidth: 400, alignment: .leading)
-//            .padding(.vertical, 10)
-//          HStack{
-//            TextField("Find Pokemon..", text: $searchText)
-//              .padding()
-//              .background(Color("BackgroundColor").cornerRadius(20))
-//              .padding(.horizontal, 10)
-//              .foregroundColor(Color("TextColor"))
-//              .bold()
-//              .multilineTextAlignment(.center)
-//
-//
-//            Button(action: {
-//              searchText = ""
-//            }, label: {
-//              Text("Cancel")
-//                .foregroundColor(Color("TextColor"))
-//                .padding(.trailing, 18)
-//            })
-//          }.padding(.bottom, 10)
