@@ -51,6 +51,7 @@ class PokemonViewModel: ObservableObject{
             DispatchQueue.main.async {
               self.pokemons.append(pokemon)
               coreDataManager.addPokemon(id: pokemon.id ?? 404, name: pokemon.name ?? "Not Found", weight: pokemon.weight ?? 404, type: pokemon.types?[0].type?.name ?? "Not Found")
+
             }
           } else if let error = response.error {
             print(error)

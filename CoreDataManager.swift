@@ -47,6 +47,23 @@ class CoreDataManager {
   // Add pokemons to database
   func addPokemon(id: Int, name: String, weight: Int, type: String) {
     let context = persistentContainer.viewContext
+
+    // Check if the Pokemon already exists in the database
+    let fetchRequest: NSFetchRequest<Pokemon> = Pokemon.fetchRequest()
+    fetchRequest.predicate = NSPredicate(format: "id == %@", NSNumber(value: id))
+
+    do {
+      let existingPokemons = try context.fetch(fetchRequest)
+      if let existingPokemon = existingPokemons.first {
+        // Pokemon already exists, no need to add it again
+        print("Pokemon already exists in the database. ID: \(existingPokemon.id), Name: \(existingPokemon.name)")
+        return
+      }
+    } catch {
+      print("Error fetching existing pokemons: \(error)")
+      return
+    }
+
     let pokemonObject = Pokemon(context: context)
     pokemonObject.id = Int32(id)
     pokemonObject.name = name
@@ -63,8 +80,9 @@ class CoreDataManager {
         try context.save()
         /*
          Print database path
-         print("path", URL.documentsDirectory) -- /Users/oguzyildirim/Library/Developer/Xcode/UserData/Previews/Simulator Devices/8FE28E56-498D-4B79-B8AB-FCFC3EA55419/data/Containers/Data/Application/A463C7F9-E62B-40C5-A0D7-6B029E74A7B3/Library/Application Support/PokeFinderDataModel.sqlite
+         print("path", URL.documentsDirectory) -- /Users/oguzyildirim/Library/Developer/CoreSimulator/Devices/35632F7E-4112-4B05-AAFA-FC2EEB54A5ED/data/Containers/Data/Application/50C171B9-006B-4A34-8C2E-2726180A0059/Library/Application Support/PokeFinderDataModel.sqlite
          */
+
       } catch {
         let nsError = error as NSError
         fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
@@ -78,6 +96,7 @@ class CoreDataManager {
 
     do {
       let pokemons = try context.fetch(fetchRequest)
+
       for pokemon in pokemons {
         print("ID: \(pokemon.id), Name: \(pokemon.name), Weight: \(pokemon.weight), Type: \(pokemon.type)")
       }
